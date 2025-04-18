@@ -2,31 +2,33 @@
 A webapp that uses retrieval-augmented generation (RAG) in conjunction with a knowledge graph (KG) to answer customer questions.
 
 ## Knowledge Domain & Schema Design
-**Domain:** Status of shared pins and boards on Pinterest, a social media platform that allows users to discover, save, and share visual content. Below is a breakdown of the KG schema design.
+**Domain:** Content sharing on Pinterest, a social media platform that allows users to discover, save, and share visual content. A customer can use this application to learn how their pins and boards are shared with other Pinterest users.
+
+Below is a breakdown of the KG schema design.
 
 ### Entities
 - **User**: Individuals with Pinterest accounts
-    - **Properties:** user_id, username, is_current_user
+    - **Properties:** username (unique), is_private
 - **Pin**: Posts uploaded to Pinterest by users
-    - **Properties:** pin_id, url
+    - **Properties:** pin_id (unique), caption, url
 - **Board**: Collections of pins created by users
-    - **Properties:** board_id, is_private
+    - **Properties:** board_id (unique), board_name, is_private
 - **ShareEvent**: Instances when users share pins/boards with each other
-    - **Properties:** share_id, content_type, timestamp
+    - **Properties:** share_id (unique), content_type, timestamp
 - **Group**: Collections of users who can view a board
-    - **Properties:** group_id, permissions
+    - **Properties:** group_id (unique), permissions
 
 ### Relationships
 - **Core**
-    - User -[CREATES]-> (Pin | Board)
+    - User -[CREATED]-> (Pin | Board | Group)
     - User -[FOLLOWS]-> (User | Board)
     - User -[BLOCKS]-> User
     - User -[SAVES]-> Pin
     - Board -[CONTAINS]-> Pin
 - **Sharing**
     - User -[SHARES]-> ShareEvent
-    - ShareEvent -[CONTENT]-> (Pin | Board)
-    - ShareEvent -[RECEIVER]-> User
+    - ShareEvent -[DELIVERS]-> (Pin | Board)
+    - ShareEvent -[HAS_RECIPIENT]-> User
 - Groups
-    - Group -[ACCESSES]-> Board
-    - User -[JOINS]-> Group
+    - Group -[CAN_ACCESSE]-> Board
+    - Group -[HAS_MEMBER]-> User

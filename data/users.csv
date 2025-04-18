@@ -1,0 +1,4 @@
+username,private,following,blocked
+Alice,TRUE,Cindy,Bob
+Bob,TRUE,,
+Cindy,FALSE,Alice;Bob,

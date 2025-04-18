@@ -1,0 +1,5 @@
+from_user,to_user,relationship
+Alice,Cindy,FOLLOWS
+Alice,Bob,BLOCKS
+Cindy,Alice,FOLLOWS
+Cindy,Bob,FOLLOWS

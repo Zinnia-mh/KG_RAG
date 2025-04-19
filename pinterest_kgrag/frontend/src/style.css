@@ -1,0 +1,60 @@
+body, html, #root {
+    height: 100%;
+    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #fafafa;
+  }
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: auto;
+    height: 100%;
+    border: 1px solid #ddd;
+    background: #fff;
+  }
+  .app-header {
+    padding: 16px;
+    background: #e60023;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+  }
+  .chat-window {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .message {
+    margin-bottom: 12px;
+  }
+  .message.user {
+    text-align: right;
+  }
+  .input-area {
+    display: flex;
+    border-top: 1px solid #eee;
+  }
+  .input-area input {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+  }
+  .input-area button {
+    border: none;
+    background: #e60023;
+    color: white;
+    padding: 0 16px;
+    cursor: pointer;
+  }
+  .input-area input:focus, .input-area button:focus {
+    outline: none;
+  }
+  .spinner {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }

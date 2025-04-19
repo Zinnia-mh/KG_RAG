@@ -88,6 +88,8 @@ def load_csvs(client, debug=False):
             if debug:
                 print(f"Size of {t[0]} : {ret}")
 
+# Main. - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def main():
     gds = gds_client()
     gds = enforce_constraints(gds)

@@ -6,7 +6,11 @@
 # Purpose: Links boards and pins, as well as users and their followers into
 #          two new csv files.
 #
+
+# Imports.
 import csv
+
+# Functions. - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def process_boards(input_file, output_file):
     with open(input_file, newline='') as boards_csv, open(output_file, 'w', newline='') as out_csv:
@@ -44,6 +48,8 @@ def process_users(input_file, output_file):
                     to_user = to_user.strip()
                     if to_user:
                         writer.writerow({"from_user": from_user, "to_user": to_user, "relationship": "BLOCKS"})
+
+# Main. - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def main():
     process_boards("boards.csv", "board_contains_pin.csv")

@@ -60,7 +60,6 @@ def query_database(query):
         input_variables=["schema", "question"], template=prompt_template
     )
 
-
     # Initialize QA chain.
     chain = GraphCypherQAChain.from_llm(
         llm,
@@ -72,7 +71,10 @@ def query_database(query):
         allow_dangerous_requests = True
     )
 
-    return (chain.invoke(query), graph.get_schema)
+    try:
+        return (chain.invoke(query), graph.get_schema)
+    except:
+        return ('[]', graph.get_schema)
 
 def find_answer(query, context):
 

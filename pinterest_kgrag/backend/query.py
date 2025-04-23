@@ -52,7 +52,7 @@ def query_database(query):
         "User Question: {question}",
 
         "Tips:\n",
-        "- Users don't access boards directly. They are members of groups,",
+        "- Users don't access boards directly. Users are members of groups,",
         "which grant access to boards."
     ])
 

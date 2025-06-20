@@ -13,7 +13,7 @@ payload = {
     "tools": []
 }
 headers = {
-    "Authorization": "Bearer sk-qyurytunwtonjakmjkndjrtsusbmmznwxncflhjfpzcjjpcj",
+    "Authorization": "Bearer your-api-token",
     "Content-Type": "application/json"
 }
 

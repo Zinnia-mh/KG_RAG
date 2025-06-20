@@ -1,4 +1,4 @@
-username,private,following,blocked
-Alice,TRUE,Cindy,Bob
-Bob,TRUE,,
-Cindy,FALSE,Alice;Bob,
+username:ID,private,following,blocked,:LABEL
+Alice,TRUE,Cindy,Bob,User
+Bob,TRUE,,,User
+Cindy,FALSE,Alice;Bob,,User

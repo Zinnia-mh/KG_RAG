@@ -17,9 +17,9 @@ CORS(app)
 @app.route('/api/query', methods=['POST'])
 def handle_query():
     data     = request.get_json()
-    question = data.get('question', '')
-    response = query(question)
+    print(f"Received query: {data}")
+    response = query(data)
     return jsonify({'response': response})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, host='0.0.0.0')

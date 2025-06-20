@@ -1,0 +1,6 @@
+flask
+flask_cors
+langchain_neo4j
+numpy
+langchain_ollama
+openai

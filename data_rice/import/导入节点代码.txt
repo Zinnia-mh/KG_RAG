@@ -1,0 +1,59 @@
+LOAD CSV WITH HEADERS FROM 'file:///node_稻作区.csv' AS row
+MERGE (v:稻作区 {id: row.id})
+SET v.name = row.name, 
+       v.label = row.label,
+       v.accumulatedTemp = row.accumulatedTemp;
+
+// 导入数据
+LOAD CSV WITH HEADERS FROM 'file:///node_害虫.csv' AS row
+MERGE (p:害虫 {id: row.id})
+SET 
+  p.name = row.name,
+  p.label = row.label,
+  p.hasMor = row.hasMor,
+  p.hasHabit = row.hasHabit;
+
+
+// 导入数据
+LOAD CSV WITH HEADERS FROM 'file:///node_水稻病害.csv' AS row
+MERGE (d:水稻病害 {id: row.id})
+SET 
+  d.name = row.name,
+  d.label = row.label,
+  d.commonPestIn = row.commonPestIn;
+
+LOAD CSV WITH HEADERS FROM 'file:///node_图像.csv' AS row
+MERGE (i:图像 {id: row.id})
+SET 
+  i.name = row.name,
+  i.label = row.label,
+  i.imagedescription = row.imagedescription,
+  i.imageURL = row.imageURL;
+
+LOAD CSV WITH HEADERS FROM 'file:///node_生长阶段.csv' AS row
+MERGE (s:生长阶段 {id: row.id})
+SET s.name = row.name, 
+       s.label = row.label;
+
+LOAD CSV WITH HEADERS FROM 'file:///node_植物器官.csv' AS row
+MERGE (z:植物器官 {id: row.id})
+SET z.name = row.name, 
+       z.label = row.label;
+
+LOAD CSV WITH HEADERS FROM 'file:///node_症状.csv' AS row
+MERGE (z:症状 {id: row.id})
+SET z.name = row.name, 
+       z.label = row.label;
+
+
+LOAD CSV WITH HEADERS FROM 'file:///node_病原体.csv' AS row
+MERGE (z:病原体 {id: row.id})
+SET z.name = row.name, 
+       z.label = row.label,
+      z.hasScientificName=row.hasScientificName,
+     z.character=row.character;
+
+LOAD CSV WITH HEADERS FROM 'file:///node_省份.csv' AS row
+MERGE (s:省份 {id: row.id})
+SET s.name = row.name, 
+       s.label = row.label;

@@ -1,0 +1,51 @@
+LOAD CSV WITH HEADERS FROM 'file:///relation_belongsToRegion.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:belongsToRegion]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_otherMor.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:otherMor]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_pestLocation.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:pestLocation]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_affectsGrowthStage.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:affectsGrowthStage]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_transmitDis.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:transmitDis]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_contain.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:contain]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_isProgressionOf.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:isProgressionOf]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_isSimilarTo.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:isSimilarTo]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_imageOf.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:imageOf]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_affectsPart.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:affectsPart]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_exhibitsSymptom.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:exhibitsSymptom]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_hasPathogen.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:hasPathogen]->(end)
+
+LOAD CSV WITH HEADERS FROM 'file:///relation_containsPro.csv' AS row
+MATCH (start {id: row.start_id}), (end {id: row.end_id})
+CREATE (start)-[:containsPro]->(end)

@@ -49,19 +49,6 @@ def query_database(query):
         graph = get_graph_connection()
         llm = get_llm_instance()
 
-        # 脱离langchain查询
-        # cypherdata = llm.invoke(prompt)
-        # print(f"Database query data: {cypherdata}")
-        # # 清洗输出（移除可能的额外解释）
-        # cypher = cypherdata.strip()
-        # if "```" in cypher:  # 处理可能存在的代码块标记
-        #     cypher = cypher.split("```")[1].replace("cypher", "").strip()
-        # print(f"Database query cypher: {cypher}")
-        # result = graph.query(cypher)
-        # print(f"Database query result: {result}")
-        # endtime = time.time()
-        # print(f"Database query time: {endtime - startime}s")
-        # return (result, graph.get_schema)
         cypher_prompt = PromptTemplate(
             input_variables=["schema", "question"], 
             template=CYPHER_PROMPT_TEMPLATE
@@ -100,7 +87,7 @@ def find_answer(query, context):
             print("db_response is '[]'")
             return "抱歉，根据知识图谱内容并未找到相关数据。"
         else:
-            prompt = ANSWER_PROMPT_TEMPLATE['with_data'].format(
+            prompt = ANSWER_PROMPT_TEMPLATE['with_data_response'].format(
                 db_response=context['db_response'],
                 query=query['question']
             )
@@ -117,8 +104,13 @@ def find_answer(query, context):
 # 主查询函数
 def query(query_dict):
     time_start = time.time()
+    llm = get_llm_instance()
+    db_data = ''
     if query_dict['open_graph'] == True:
         db_response, schema = query_database(query_dict['question'])
+        db_data = llm.invoke(ANSWER_PROMPT_TEMPLATE['with_data'].format(
+            db_response=db_response
+            ))
     else:
         db_response = '[]'
         schema = '不使用知识图谱回答问题'
@@ -133,7 +125,7 @@ def query(query_dict):
 
     time_end = time.time()
     print(f"Query time: {time_end - time_start}s")
-    return result
+    return {result, db_data}
 
 if __name__ == '__main__':
     user_query = input("> ")

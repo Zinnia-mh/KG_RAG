@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import { ClipLoader } from 'react-spinners'
 import './style.css'
 import logo from './images/logo_01.svg'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Button, Popover } from 'antd'
 
 function App () {
   const [input, setInput] = useState('')
   const [open, setOpen] = useState(true)
   const [chat, setChat] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isInterrupting, setIsInterrupting] = useState(false)
+  const cancelTokenRef = useRef(null)
 
   const sendQuestion = async () => {
     if (!input.trim()) return
@@ -19,23 +22,41 @@ function App () {
     setChat(prev => [...prev, userMsg])
     setLoading(true)
     setInput('')
+    setIsInterrupting(true)
+
+    cancelTokenRef.current = axios.CancelToken.source()
 
     try {
-      const { data } = await axios.post('http://127.0.0.1:5000/api/query', {
-        question: input,
-        open_graph: open
-      })
+      const { data } = await axios.post(
+        'http://127.0.0.1:5000/api/query',
+        {
+          question: input,
+          open_graph: open
+        },
+        { cancelToken: cancelTokenRef.current.token }
+      )
 
-      const botMsg = { sender: 'Bot', text: data.response, isopen: open }
+      const botMsg = { sender: 'Bot', text: data.response, db_data: data.db_data, isopen: open, iswrong: false }
+      console.log('db_data:', data.db_data)
       setChat(prev => [...prev, botMsg])
     } catch (err) {
-      console.error(err)
-      setChat(prev => [...prev, { sender: 'Bot', text: '出错了，请稍后再试', isopen: open }])
+      if (axios.isCancel(err)) {
+        console.error('请求已被中断:', err.message)
+        setChat(prev => [...prev, { sender: 'Bot', text: '已取消', isopen: open, iswrong: true }])
+      } else {
+        console.error(err)
+        setChat(prev => [...prev, { sender: 'Bot', text: '出错了，请稍后再试', isopen: open, iswrong: true }])
+      }
     } finally {
       setLoading(false)
+      setIsInterrupting(false)
     }
+  }
 
-    setInput('')
+  const interruptRequest = () => {
+    if (cancelTokenRef.current) {
+      cancelTokenRef.current.cancel('用户中断了请求')
+    }
   }
 
   const handleKeyPress = e => {
@@ -47,7 +68,7 @@ function App () {
   }
 
   return (
-    <div className="chat-wrapper">
+    <div className="chat-wrapper mobile-friendly">
       <div className="chat-box">
         <div className="chat-header">
           <div className="chat-logo">
@@ -60,12 +81,23 @@ function App () {
 
         <div className="chat-window">
           {chat.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`chat-bubble ${msg.sender === 'User' ? 'user' : msg.isopen ? 'bot-graph' : 'bot-model'}`}
-            >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>
-            </div>
+            <>
+              <div
+                className={`chat-bubble ${msg.sender === 'User' ? 'user' : msg.isopen ? 'bot-graph' : 'bot-model'}`}
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>
+              </div>
+              {msg.isopen && !msg.iswrong ? (
+                <Popover
+                  classNames={'popover'}
+                  content={<ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.db_data}</ReactMarkdown>}
+                  trigger="click"
+                  placement="leftBottom"
+                >
+                  <div className='popover-div'>检索条目</div>
+                </Popover>
+              ) : ''}
+            </>
           ))}
 
           {loading && (
@@ -95,8 +127,12 @@ function App () {
               onKeyDown={handleKeyPress}
               disabled={loading}
             />
-            <button className="chat-send" onClick={sendQuestion} disabled={loading}>
-              发送
+            <button
+              className="chat-send"
+              onClick={isInterrupting ? interruptRequest : sendQuestion}
+              disabled={loading && !isInterrupting}
+            >
+              {isInterrupting ? '中断' : '发送'}
             </button>
           </div>
         </div>

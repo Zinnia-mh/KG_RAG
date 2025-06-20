@@ -18,8 +18,10 @@ CORS(app)
 def handle_query():
     data     = request.get_json()
     print(f"Received query: {data}")
-    response = query(data)
-    return jsonify({'response': response})
+    result, db_data = query(data)
+    print("response & db_response1: ", result)
+    print("response & db_response2: ", db_data)
+    return jsonify({'response': result, 'db_data': db_data})
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')

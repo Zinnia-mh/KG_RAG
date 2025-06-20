@@ -6,11 +6,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 img {
   width: 100%;
+  max-width: 100%;
   height: auto;
 }
 
@@ -29,27 +29,45 @@ th {
   background-color: #f2f2f2;
 }
 
-.chat-wrapper {
+/* 修复底部空白问题 */
+.chat-box {
   width: 100%;
-  max-width: 860px;
-  margin: 2rem auto;
-  padding: 1rem;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 100%; /* 修改为占满父容器 */
 }
 
-.chat-box {
-  background: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+.chat-wrapper {
   display: flex;
   flex-direction: column;
-  height: 660px;
+  align-items: center;
+  height: 100vh; /* 确保整个页面占满视口高度 */
+  margin: 0; /* 移除可能的外边距 */
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f4f5f7;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* 消息之间的间距 */
+  padding: 10px; /* 添加内边距 */
+  height: calc(100vh - 190px); /* 减去头部和输入区域的高度 */
+}
+
+.chat-input-area {
+  padding: 10px;
+  background-color: #fff; /* 确保底部输入区域背景色一致 */
 }
 
 .chat-header {
+  padding: 10px 20px;
   background-color: #009944;
   color: white;
-  padding: 10px 16px 10px 16px;
   font-size: 1.2rem;
   text-align: center;
   font-weight: 600;
@@ -68,14 +86,19 @@ th {
     height: auto;
   }
 }
-.chat-window {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  background-color: #f4f5f7;
+
+.popover-div {
+  width: 20%;
+  margin-top: -10px;
+  border: #009944 solid 0.5px;
+  border-radius: 6px;
+  font-size: small;
+  box-shadow: #ccc;
+  color: #009944;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem; /* space between messages 12px */
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .chat-bubble {
@@ -153,10 +176,11 @@ th {
   cursor: pointer;
 }
 
-.chat-input-area {
-  padding: 12px 16px 16px;
-  border-top: 1px solid #ddd;
-}
+/* .chat-input-area {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+} */
 
 .chat-input-container {
   display: flex;
@@ -192,4 +216,47 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* 手机端优化 */
+@media (max-width: 768px) {
+  .chat-box {
+    width: 100%;
+  }
+
+  .chat-window {
+    padding: 10px;
+    height: calc(100vh - 235px);
+  }
+
+  .chat-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chat-title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .chat-input-container {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .chat-input {
+    font-size: 16px;
+    margin-right: 0px;
+  }
+
+  .chat-send {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .popover-div {
+    font-size: 14px;
+    padding: 5px;
+    width: 20%;
+  }
 }
